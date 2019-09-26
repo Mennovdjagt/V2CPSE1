@@ -21,8 +21,8 @@ int main( void ){
    if( 0 ){ rtttl_play( p, muppets );  }
    if( 0 ){ rtttl_play( p, rickroll );  }
    if( 0 ){ rtttl_play( p, one );  }
-   if( 0 ){ rtttl_play( p, indiana_jones );  }
-   if( 1 ){ rtttl_play( p, star_wars );  }
+   if( 1 ){ rtttl_play( p, indiana_jones );  }
+   if( 0 ){ rtttl_play( p, star_wars );  }
    if( 0 ){ rtttl_play( p, hawaii_50 );  }
    if( 0 ){ rtttl_play( p, mickey );  }
    if( 0 ){ rtttl_play( p, gravityFalls );  }

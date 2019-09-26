@@ -1,7 +1,7 @@
 .PHONY: clean
 
-generator.elf : generator.o rtttl_player.o note_player_print.o
-	g++ generator.o rtttl_player.o note_player_print.o -o generator.elf
+generator.exe : generator.o rtttl_player.o note_player_print.o
+	g++ generator.o rtttl_player.o note_player_print.o -o generator.exe
 
 generator.o : generator.cpp fur_elise.hpp rtttl_player.hpp note_player_print.hpp note_player.hpp note.hpp
 	g++ -c generator.cpp -o generator.o
