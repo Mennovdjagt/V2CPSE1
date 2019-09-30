@@ -10,6 +10,10 @@ int main( void ){
    auto sda = target::pin_oc( target::pins::sda );
    auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda( scl,sda );
 
+   auto clk = target::pin_in( hwlib::target::pins::d7 );   			
+   auto dt = target::pin_in( hwlib::target::pins::d6 );   			
+   auto sw = target::pin_in( hwlib::target::pins::d5 );
+
    auto display = hwlib::glcd_oled{ i2c_bus, 0x3c };
 
    hwlib::wait_ms(100);
@@ -23,7 +27,7 @@ int main( void ){
    constexpr auto sinus = lookup< 360, int >( scaled_sine_from_degrees );
    constexpr auto cosinus = lookup< 360, int >( scaled_cosine_from_degrees );
 
-   clock klok = clock( display, location, radius, sizeMarker, hour, minut, second, sinus, cosinus );
+   clock klok = clock( display, clk, dt, sw, location, radius, sizeMarker, hour, minut, second, sinus, cosinus );
 
    unsigned int t = hwlib::now_us();
 
@@ -34,6 +38,11 @@ int main( void ){
       	 klok.updateTime();
          t = hwlib::now_us();
       }
+
+      if(sw.read() == 0){
+      	 klok.changeTime();
+      }
+
       //hwlib::cout << hwlib::now_us() - t << "\n";
    }
 

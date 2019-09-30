@@ -1,8 +1,11 @@
 #include "clock.hpp"
 
 //clock::clock(){}
-clock::clock( hwlib::glcd_oled & oled, hwlib::xy location, int & radius, int & sizeMarkers, int & hour, int & minut, int & second, lookup<360, int> sinus, lookup<360, int> cosinus ):
+clock::clock( hwlib::glcd_oled & oled, hwlib::pin_in & clk, hwlib::pin_in & dt, hwlib::pin_in & sw, hwlib::xy location, int & radius, int & sizeMarkers, int & hour, int & minut, int & second, lookup<360, int> sinus, lookup<360, int> cosinus ):
    oled( oled ),
+   clk( clk ),
+   dt( dt ),
+   sw( sw ),
    location( location ),
    radius( radius ),
    sizeMarkers( sizeMarkers ),
@@ -46,6 +49,15 @@ void clock::drawSecondHand( hwlib::xy location ){
 	hwlib::line( location, hwlib::xy( x, y ) ).draw( oled );
 }
 
+void clock::drawClock(){
+	oled.clear();
+	hourMarkers( location, radius, sizeMarkers );
+	drawHourHand( location );
+	drawMinutHand( location );
+	drawSecondHand( location );
+	oled.flush();
+}
+
 void clock::updateTime(){
 
 	if( second == 59 ){
@@ -64,14 +76,77 @@ void clock::updateTime(){
 		second++;
 	}
 
-	oled.clear();
-	hourMarkers( location, radius, sizeMarkers );
-	drawHourHand( location );
-	drawMinutHand( location );
-	drawSecondHand( location );
-	oled.flush();
+	drawClock();
 }
 
 void clock::changeTime(){
-	
+	int counter = 0;
+
+	for(;;){           												
+   	  //hwlib::wait_ms(100);														
+
+   	    if(clk.read() == 1 && dt.read() == 1){		
+
+   	    	drawClock();
+
+   	  		for(;;){													
+
+   	  			if(sw.read() == 0){											
+   	  		    	counter++; 
+   	  		    	break;  	  		    											
+   	  			}
+
+   	  			if(clk.read() == 1 && dt.read() == 0){						
+   	  				if(counter == 0){
+   	  					if(hour == 11){
+   	  						hour = 0;
+   	  					}else{
+   	  						hour++;
+   	  					}
+   	  				}else if(counter == 1){
+   	  					if(minut == 59){
+   	  						minut = 0;
+   	  					}else{
+   	  						minut++;
+   	  					}
+   	  				}else{
+   	  					if(second == 59){
+   	  						second = 0;
+   	  					}else{
+   	  						second++;
+   	  					}
+   	  				}											
+					break;												
+   	  			}else if(clk.read() == 0 && dt.read() == 1){			
+   	  				if(counter == 0){
+   	  					if(hour == 0){
+   	  						hour = 11;
+   	  					}else{
+   	  						hour--;
+   	  					}
+   	  				}else if(counter == 1){
+   	  					if(minut == 0){
+   	  						minut = 59;
+   	  					}else{
+   	  						minut--;
+   	  					}
+   	  				}else{
+   	  					if(second == 0){
+   	  						second = 59;
+   	  					}else{
+   	  						second--;
+   	  					}
+   	  				}												
+		
+   	  				break;													
+   	  			}else if(clk.read() == 0 && dt.read() == 0){				
+   	  				break;													
+   	  			}					
+   	  		}
+   	    }
+
+   	    if( counter > 2 ){
+   	  		break;
+   	  	}
+   }
 }
