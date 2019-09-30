@@ -17,20 +17,24 @@ int main( void ){
    constexpr hwlib::xy location = hwlib::xy( 64, 32 );
    int radius = 30;
    int sizeMarker = 2;
-   int hour = 0;
-   int minut = 15;
-   int second = 30;
+   int hour = 3;
+   int minut = 59;
+   int second = 50;
    constexpr auto sinus = lookup< 360, int >( scaled_sine_from_degrees );
    constexpr auto cosinus = lookup< 360, int >( scaled_cosine_from_degrees );
 
    clock klok = clock( display, location, radius, sizeMarker, hour, minut, second, sinus, cosinus );
 
+   unsigned int t = hwlib::now_us();
+
    for(;;){
-      klok.updateTime(hour, minut, second);
-      if(hour == 11){ hour = 0; }else{ hour++; }
-      if(minut == 59){ minut = 0; }else{ minut++; }
-      if(second == 59){ second = 0; }else{ second++; }
-      hwlib::wait_ms(500);
+   	  //unsigned int t = hwlib::now_us();						//to check the time it takes, take away the commands at the hwlib::now_us()
+
+      if( hwlib::now_us() >= (t + 810700) ){					//it takes around 189300 microseconds to update the clock
+      	 klok.updateTime();
+         t = hwlib::now_us();
+      }
+      //hwlib::cout << hwlib::now_us() - t << "\n";
    }
 
 }

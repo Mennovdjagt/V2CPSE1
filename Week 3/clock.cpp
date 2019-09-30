@@ -46,14 +46,32 @@ void clock::drawSecondHand( hwlib::xy location ){
 	hwlib::line( location, hwlib::xy( x, y ) ).draw( oled );
 }
 
-void clock::updateTime( int hour1, int minut1, int second1 ){
-	hour = hour1;
-	minut = minut1;
-	second = second1;
+void clock::updateTime(){
+
+	if( second == 59 ){
+		second = 0;
+		if( minut == 59 ){
+			minut = 0;
+			if(hour == 11){
+				hour = 0;
+			}else{
+				hour++;
+			}
+		}else{
+			minut++;
+		}
+	}else{
+		second++;
+	}
+
 	oled.clear();
 	hourMarkers( location, radius, sizeMarkers );
 	drawHourHand( location );
 	drawMinutHand( location );
 	drawSecondHand( location );
 	oled.flush();
+}
+
+void clock::changeTime(){
+	
 }

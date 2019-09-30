@@ -48,7 +48,8 @@ public:
    void drawHourHand( hwlib::xy location );
    void drawMinutHand( hwlib::xy location );
    void drawSecondHand( hwlib::xy location );
-   void updateTime( int hour1, int minut1, int second1 );
+   void updateTime();
+   void changeTime();
 
 };
 
