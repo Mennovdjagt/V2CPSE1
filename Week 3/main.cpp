@@ -1,5 +1,6 @@
 #include "hwlib.hpp"
 #include "sin.hpp"
+#include "clock.hpp"
 
 int main( void ){	
 
