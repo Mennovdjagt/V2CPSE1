@@ -1,5 +1,5 @@
 #include "hwlib.hpp"
-#include "sin.hpp"
+#include "sinus.hpp"
 #include "clock.hpp"
 
 int main( void ){	
@@ -14,26 +14,23 @@ int main( void ){
 
    hwlib::wait_ms(100);
    
-   display.clear();
+   constexpr hwlib::xy location = hwlib::xy( 64, 32 );
+   int radius = 30;
+   int sizeMarker = 2;
+   int hour = 0;
+   int minut = 15;
+   int second = 30;
+   constexpr auto sinus = lookup< 360, int >( scaled_sine_from_degrees );
+   constexpr auto cosinus = lookup< 360, int >( scaled_cosine_from_degrees );
 
-   hwlib::circle( hwlib::xy( 64, 32 ), 2 ).draw( display );
+   clock klok = clock( display, location, radius, sizeMarker, hour, minut, second, sinus, cosinus );
 
-   auto s = sinus();
-
-   for(int i = 0; i < 360; i+=30){
-      int x = s.scaled_sine_from_degrees(i, 64);
-      int y = s.scaled_cosine_from_degrees(i, 32);
-
-      hwlib::cout << "x: " << x << " y: " << y << "\n";
-
-      hwlib::circle( hwlib::xy( x, y ), 2 ).draw( display );
+   for(;;){
+      klok.updateTime(hour, minut, second);
+      if(hour == 11){ hour = 0; }else{ hour++; }
+      if(minut == 59){ minut = 0; }else{ minut++; }
+      if(second == 59){ second = 0; }else{ second++; }
+      hwlib::wait_ms(500);
    }
-
-   //hwlib::circle( hwlib::xy( x, y ), 2 ).draw( display );
-   //hwlib::circle( hwlib::xy( x1, y1 ), 2 ).draw( display );
-   //hwlib::circle( hwlib::xy( x2, y2 ), 2 ).draw( display );
-   //hwlib::circle( hwlib::xy( x3, y3 ), 2 ).draw( display );
-
-   display.flush();
 
 }

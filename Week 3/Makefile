@@ -10,8 +10,10 @@
 
 # source & header files in this project (main.cpp is automatically assumed)
 
-HEADERS += sin.hpp
-SOURCES += 
+HEADERS += sinus.hpp
+
+HEADERS += clock.hpp
+SOURCES += clock.cpp
 
 # other places to look for files for this project
 SEARCH  := 

@@ -2,7 +2,7 @@
 #define _CLOCK_HPP
 
 #include "hwlib.hpp"
-#include "sin.hpp"
+#include "sinus.hpp"
 #include <array>
 
 template< int N, typename T >
@@ -28,12 +28,13 @@ public:
 class clock{
 private:
 
-   hwlib::glcd_oled glcd_oled                //the oled 
-   hwlib::xy location;                       //the middle point of the clock
+   hwlib::glcd_oled & oled;                  //the oled 
+   hwlib::xy location;                     //the middle point of the clock
    int radius;                               //the radius of the hole clock
    int sizeMarkers;                          //the size of the hour markings (the radius)
    int hour;                                 //the current hour (will be automatically 0)
    int minut;                                //the current minut (will be automatically 0)
+   int second;
 
    const lookup< 360, int > sinus;           //the table of all the x-as values
    const lookup< 360, int > cosinus;         //the table of all the y-as values
@@ -41,12 +42,13 @@ private:
 public:
 
    //clock();
-   clock( hwlib::glcd_oled & oled, hwlib::xy & location, int & radius, int & sizeMarkers, int & hour, int & minut, lookup<360, int> sinus, lookup<360, int> cosinus );
+   clock( hwlib::glcd_oled & oled, hwlib::xy location, int & radius, int & sizeMarkers, int & hour, int & minut, int & second, lookup<360, int> sinus, lookup<360, int> cosinus );
 
-   void HourMarkers( hwlib::xy location, int radius, int sizeMarkers );
-   void drawHourHand( hwlib::xy location, int hour );
-   void drawMinutHand( hwlib::xy location, int minut );
-   void updateTime();
+   void hourMarkers( hwlib::xy location, int radius, int sizeMarkers );
+   void drawHourHand( hwlib::xy location );
+   void drawMinutHand( hwlib::xy location );
+   void drawSecondHand( hwlib::xy location );
+   void updateTime( int hour1, int minut1, int second1 );
 
 };
 
