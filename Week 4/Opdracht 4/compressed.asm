@@ -63,3 +63,5 @@ Oorlof m@S4arme @V3apen,
 Voor Godt wil ick belijden 
  End sijner groot@73macht,@K3Dat ick tot gheenen tijd@63@L3@<3Conin@P3heb veracht:@J4an dat i@J3Godt den Heere,@M4er hoochst@93Maje@83yt@J4Heb moeten obedieren@G4In der gh@@3chticheyt.
 "
+
+	.align 2

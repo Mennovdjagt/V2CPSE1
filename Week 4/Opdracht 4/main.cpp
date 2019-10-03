@@ -8,6 +8,8 @@ extern "C" char decompress( );
 
 int main( void ){
 
+   hwlib::wait_ms( 500 );
+
    decompress();
-   
+
 }

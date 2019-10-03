@@ -1,24 +1,24 @@
 .cpu cortex-m0
-buffer: .byte 100
+.bss
+buffer: .fill 0x28			//40
 .text
 .align 2
 .global decompress
 
 decompress:
-	PUSH {R4, R5, R6, R7 LR}	//put all the registers on the stack
+	PUSH {R4, R5, R6, R7, LR}	//put all the registers on the stack
 	LDR R3, =buffer			//load the buffer into R3
 	LDR R4, =bericht		//load the bericht
 	MOV R5, #0			//move 0 into register 5 to use as index
 
 loop:
 	LDRB R0, [R4, R5]		//load the byte int R4 at index R5 to R0
+	ADD R5, R5, #1
 
 	CMP R0, #0			//compare R0 to '\0'
 	BEQ done			//if R0 is equal to #0 go to label done
 
-	ADD R5, #1			//add 1 to R5 to do the next byte after this is done
-
-	CMP R0, #64			//compare R0 with 64, ascii of 64 is '@'
+	CMP R0, #'@'			//compare R0 with 64, ascii of 64 is '@'
 	BEQ check			//if R0 is equal to @ go to the label check
 
 	BL add				//if R0 is not equal to @ go to add1
@@ -27,7 +27,7 @@ loop:
 
 add:
 	PUSH { LR }			//save where we where before this routine
-	MOV R1, #100			//make the buffer_length equal to a 100
+	MOV R1, #0x27			//make the buffer_length equal to a 40
 
 addLoop:
 	SUB R1, #1			//take 1 from R1
@@ -47,8 +47,8 @@ check:
 	ADD R5, #1			//add 1 to R5 to load the next byte
 	LDRB R7, [R4, R5]		//load the byte in R4 at index R5 into R7
 	ADD R5, #1			//add 1 to R5
-	SUB R6, #0			//substract 0 from R6
-	SUB R7, #0			//substract 0 from R7	
+	SUB R6, #'0'			//substract 0 from R6
+	SUB R7, #'0'			//substract 0 from R7	
 
 checkLoop:
 	LDRB R0, [R3, R6]		//load the byte R3 at index R6 (offset) into R0
@@ -59,4 +59,4 @@ checkLoop:
 	BL checkLoop			//else stay looping this label
 
 done:
-	POP {R4, R5, R6, R7 LR}		//take the values of the stack and put them back
+	POP {R4, R5, R6, R7, PC}	//take the values of the stack and put them back
