@@ -16,8 +16,8 @@ public:
 	bool contains( int checkInt );
 
 	friend std::ostream & operator<<(std::ostream &stream, const integerSet &set){
-		for(const auto & element : set.intArray){
-			stream << char(element) << ", ";
+		for(const auto & i : set.intArray){
+			stream << i << ", ";
 		}
 		return stream;
 	}
