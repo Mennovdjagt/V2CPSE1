@@ -15,7 +15,7 @@ public:
 	void add( T addElement ){
 		if(contains(addElement) == 0){					//only add a value if it isn't already in the array 
 			for (int i = 0; i < N; ++i){				//loop through every elemnt till there is one 0
-				if( flexArray[i] == 0 ){					
+				if( flexArray[i] == T() ){					
 					flexArray[i] = addElement;			//add the element on the place where a 0 has been found
 					break;								//go out of the loop
 				}
@@ -29,7 +29,7 @@ public:
 				for (int j = i; j < N-1; ++j){			//if element is in array replace the element with the next element in the array till the end of the array
 					flexArray[j] = flexArray[j + 1];	//shift the array 
 				}
-				flexArray[N-1] = 0;						//deletes the last element after shifting
+				flexArray[N-1] = T();						//deletes the last element after shifting
 			}
 		}
 	}
@@ -43,6 +43,18 @@ public:
 		return 0;	
 	}
 
+	T biggest(){
+		T max = flexArray[0];							//save the first value in the array
+
+		for(int i = 1; i < N; i++){						//loop through all values in the array
+			if(flexArray[i] > max){						//check if the first value is smaller than the next values
+				max = flexArray[i];						//if one of the next values is bigger change max to that value and check everything again
+			}	
+		}
+
+		return max;										//return the biggest value
+	}
+
 	friend std::ostream & operator<<(std::ostream &stream, const integerSet &set){
 		for(const auto & i : set.flexArray){
 			stream << i << ", ";
@@ -50,9 +62,20 @@ public:
 		return stream;
 	}
 
-
 };
 
+template< class T, int N >
+constexpr bool operator>(const std::array<T, N>& lhs, const std::array<T, N>& rhs){
+	unsigned int lValue = 0;
+	unsigned int rValue = 0;
+
+	for(int i = 0; i < N; ++i){
+		lValue += lhs[i];
+		rValue += rhs[i];	
+	}
+
+	return (lValue > rValue) ? true : false;
+}
 
 
 #endif //_INTEGERSET_HPP

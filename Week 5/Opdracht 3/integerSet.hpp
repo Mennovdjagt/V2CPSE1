@@ -43,6 +43,18 @@ public:
 		return 0;	
 	}
 
+	T biggest(){
+		T max = flexArray[0];							//save the first value in the array
+
+		for(int i = 1; i < N; i++){						//loop through all values in the array
+			if(flexArray[i] > max){						//check if the first value is smaller than the next values
+				max = flexArray[i];						//if one of the next values is bigger change max to that value and check everything again
+			}	
+		}
+
+		return max;										//return the biggest value
+	}
+
 	friend std::ostream & operator<<(std::ostream &stream, const integerSet &set){
 		for(const auto & i : set.flexArray){
 			stream << i << ", ";
@@ -50,9 +62,6 @@ public:
 		return stream;
 	}
 
-
 };
-
-
 
 #endif //_INTEGERSET_HPP

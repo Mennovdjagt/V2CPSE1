@@ -27,15 +27,15 @@ TEST_CASE( "add float values 1 to 11" ){
 }
 
 TEST_CASE( "add char values 1 to 11" ){
-   auto a = integerSet<char, 11>();
+   auto a = integerSet<char, 3>();
 
-   for (int i = 70; i < 82; ++i){
+   for (int i = 70; i < 74; ++i){
       a.add(char(i));
    }
 
    std::stringstream s;
    s << a;
-   REQUIRE( s.str() == "F, G, H, I, J, K, L, M, N, O, P, " ); 
+   REQUIRE( s.str() == "F, G, H, " ); 
 }
 
 TEST_CASE( "try adding excisting value in array" ){
@@ -120,4 +120,37 @@ TEST_CASE( "check if a char value is in the array" ){
 
 
    REQUIRE(b == 1);
+}
+
+TEST_CASE( "check for the biggest value in the array" ){
+   auto a = integerSet<int, 10>();
+
+   a.add(3);
+   a.add(4);
+   a.add(11);
+   a.add(9);
+   a.add(6);
+   a.add(5);
+   a.add(2);
+   a.add(7);
+   a.add(1);
+   a.add(8);
+
+   int b = a.biggest();
+
+
+   REQUIRE(b == 11);
+}
+
+TEST_CASE( "check for the biggest char in the array" ){
+   auto a = integerSet<char, 3>();
+
+   a.add('a');
+   a.add('d');
+   a.add('b');
+
+   int b = a.biggest();
+
+
+   REQUIRE(b == 'd');
 }
